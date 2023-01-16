@@ -2,6 +2,8 @@ package net.yorksolutions.pantrybe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.Set;
 

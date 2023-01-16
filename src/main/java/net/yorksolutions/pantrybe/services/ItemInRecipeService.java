@@ -36,6 +36,8 @@ public class ItemInRecipeService {
             throw new Exception();
         itemInRecipe.recipe = recipeWithId.orElse(null);
         itemInRecipeRepo.save(itemInRecipe);
+        recipeWithId.get().ingredients.add(itemInRecipe);
+        recipeRepo.save(recipeWithId.get());
     }
     public void deleteItemInRecipeById(Long id) throws Exception {
         Optional<ItemInRecipe> itemInRecipeWithId = itemInRecipeRepo.findById(id);
@@ -60,5 +62,7 @@ public class ItemInRecipeService {
             throw new Exception();
         itemInRecipe.recipe = recipeWithId.orElse(null);
         itemInRecipeRepo.save(itemInRecipe);
+        recipeWithId.get().ingredients.add(itemInRecipe);
+        recipeRepo.save(recipeWithId.get());
     }
 }

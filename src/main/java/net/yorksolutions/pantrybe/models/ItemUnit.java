@@ -2,6 +2,8 @@ package net.yorksolutions.pantrybe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class ItemUnit {
     public Pantry pantry;
     @OneToMany
     @JsonIgnoreProperties("item")
+    @Cascade(CascadeType.ALL)
     public Set<ItemInRecipe> thisItemInRecipes;
 
     public ItemUnit(Long id, String name, String image, Float weightPerUnit, Float caloriesPerUnit, Integer pantryQuantity, Pantry pantry, Set<ItemInRecipe> thisItemInRecipes) {

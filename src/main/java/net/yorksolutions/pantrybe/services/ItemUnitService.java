@@ -2,6 +2,7 @@ package net.yorksolutions.pantrybe.services;
 
 import net.yorksolutions.pantrybe.DTOs.ItemInRecipeDTO;
 import net.yorksolutions.pantrybe.DTOs.ItemUnitDTO;
+import net.yorksolutions.pantrybe.DTOs.PantryDTO;
 import net.yorksolutions.pantrybe.models.ItemInRecipe;
 import net.yorksolutions.pantrybe.models.ItemUnit;
 import net.yorksolutions.pantrybe.models.Pantry;
@@ -34,8 +35,9 @@ public class ItemUnitService {
         itemUnit.pantryQuantity = newItemUnit.pantryQuantity;
         //find the pantry
         Optional<Pantry> pantryWithId = pantryRepo.findById(newItemUnit.pantryId);
-        if(pantryWithId.isEmpty())
+        if(pantryWithId.isEmpty()) {
             throw new Exception();
+        }
         itemUnit.pantry = pantryWithId.orElse(null);
         //find the applicable ItemInRecipes
         for (Long itemInRecipeId : newItemUnit.thisItemInRecipeIds) {
@@ -45,12 +47,27 @@ public class ItemUnitService {
             itemInRecipeWithId.ifPresent(itemUnit.thisItemInRecipes::add);
         }
         itemUnitRepo.save(itemUnit);
+        pantryWithId.get().items.add(itemUnit);
+        pantryRepo.save(pantryWithId.get());
     }
     public void deleteItemUnitById(Long id) throws Exception {
         Optional<ItemUnit> itemUnitWithId = itemUnitRepo.findById(id);
-        if (itemUnitWithId.isEmpty())
+        if (itemUnitWithId.isEmpty()) {
+            System.out.println("exception here");
             throw new Exception();
+        }
         itemUnitRepo.deleteById(id);
+        //ItemUnit itemUnit = itemUnitWithId.get();
+//        Pantry pantry = pantryRepo.findById(itemUnit.pantry.id).get();
+//        Long itemId = 0L;
+//        for ( ItemUnit item : pantry.items ) {
+//            if(item.id == itemUnit.id) {
+//                itemId = item.id;
+//            }
+//        }
+//        if(itemId > 0)
+//            pantry.items.remove(itemId);
+//        pantryRepo.save(pantry);
     }
     public void updateItemUnit(Long id, ItemUnitDTO updatedItemUnit) throws Exception {
         Optional<ItemUnit> itemUnitWithId = itemUnitRepo.findById(id);
@@ -68,12 +85,14 @@ public class ItemUnitService {
             throw new Exception();
         itemUnit.pantry = pantryWithId.orElse(null);
         //find the applicable ItemInRecipes
-        for (Long itemInRecipeId : updatedItemUnit.thisItemInRecipeIds) {
-            Optional<ItemInRecipe> itemInRecipeWithId = itemInRecipeRepo.findById(itemInRecipeId);
-            if (itemInRecipeWithId.isEmpty())
-                throw new Exception();
-            itemInRecipeWithId.ifPresent(itemUnit.thisItemInRecipes::add);
-        }
+        //this is not something the user can update
+//        for (Long itemInRecipeId : updatedItemUnit.thisItemInRecipeIds) {
+//            Optional<ItemInRecipe> itemInRecipeWithId = itemInRecipeRepo.findById(itemInRecipeId);
+//            if (itemInRecipeWithId.isEmpty())
+//                throw new Exception();
+//            itemInRecipeWithId.ifPresent(itemUnit.thisItemInRecipes::add);
+//        }
+        ///
         itemUnitRepo.save(itemUnit);
     }
 }
