@@ -24,7 +24,6 @@ public class ItemUnitController {
         try{
             service.createItemUnit(itemUnit);
         } catch (Exception e){
-            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED);
         }
     }
@@ -33,7 +32,6 @@ public class ItemUnitController {
         try{
             service.deleteItemUnitById(id);
         } catch (Exception e){
-            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }

@@ -41,7 +41,11 @@ public class RecipeService {
         if(userWithId.isEmpty())
             throw new Exception();
         recipe.user = userWithId.orElse(null);
-        recipeRepo.save(recipe);
+        //add the recipe to that users recipes
+        AppUser user = userWithId.get();
+        user.recipes.add(recipe);
+        appUserRepo.save(user);
+        //recipeRepo.save(recipe);
     }
     public void deleteRecipeById(Long id) throws Exception {
         Optional<Recipe> recipeWithId = recipeRepo.findById(id);
@@ -65,6 +69,9 @@ public class RecipeService {
                 throw new Exception();
             ingredientWithId.ifPresent(recipe.ingredients::add);
         }
-        recipeRepo.save(recipe);
+        AppUser user = appUserRepo.findById(updatedRecipe.userId).get();
+        user.recipes.add(recipe);
+        appUserRepo.save(user);
+        //recipeRepo.save(recipe);
     }
 }

@@ -36,6 +36,8 @@ public class ItemInRecipeService {
             throw new Exception();
         itemInRecipe.recipe = recipeWithId.orElse(null);
         itemInRecipeRepo.save(itemInRecipe);
+        itemWithId.get().thisItemInRecipes.add(itemInRecipe);
+        itemUnitRepo.save(itemWithId.get());
         recipeWithId.get().ingredients.add(itemInRecipe);
         recipeRepo.save(recipeWithId.get());
     }
@@ -62,6 +64,8 @@ public class ItemInRecipeService {
             throw new Exception();
         itemInRecipe.recipe = recipeWithId.orElse(null);
         itemInRecipeRepo.save(itemInRecipe);
+        itemWithId.get().thisItemInRecipes.add(itemInRecipe);
+        itemUnitRepo.save(itemWithId.get());
         recipeWithId.get().ingredients.add(itemInRecipe);
         recipeRepo.save(recipeWithId.get());
     }

@@ -21,8 +21,11 @@ public class AppUserService {
     public Iterable<AppUser> getAll() {
         return appUserRepo.findAll();
     }
-    public AppUser getUserByUsernameAndPassword(String username, String password) {
-        return appUserRepo.findAppUserByUsernameAndPassword(username, password).orElse(null);
+    public AppUser getUserByUsernameAndPassword(String username, String password) throws Exception {
+        Optional<AppUser> realAppUser = appUserRepo.findAppUserByUsernameAndPassword(username, password);
+        if (realAppUser.isPresent())
+            return realAppUser.get();
+        throw new Exception();
     }
     public void createAppUser(AppUserDTO newAppUser)  throws Exception {
         Optional<AppUser> appUserWithUsername = appUserRepo.findAppUserByUsername(newAppUser.username);

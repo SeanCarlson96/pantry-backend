@@ -14,6 +14,7 @@ public class Pantry {
     public Long id;
     @OneToMany
     @JsonIgnoreProperties("pantry")
+    @Cascade(CascadeType.ALL)
     public Set<ItemUnit> items;
 
     public Pantry(Long id, Set<ItemUnit> items) {
