@@ -28,20 +28,16 @@ public class RecipeService {
         recipe.name = newRecipe.name;
         recipe.image = newRecipe.image;
         recipe.steps = newRecipe.steps;
-        //loop through newRecipe.ingredientIds
         for (Long ingredientId : newRecipe.ingredientIds) {
-            //get that ingredient by its id
             Optional<ItemInRecipe> ingredientWithId = itemInRecipeRepo.findById(ingredientId);
             if(ingredientWithId.isEmpty())
                 throw new Exception();
             ingredientWithId.ifPresent(recipe.ingredients::add);
         }
-        //find the user to add
         Optional<AppUser> userWithId = appUserRepo.findById(newRecipe.userId);
         if(userWithId.isEmpty())
             throw new Exception();
         recipe.user = userWithId.orElse(null);
-        //add the recipe to that users recipes
         AppUser user = userWithId.get();
         user.recipes.add(recipe);
         appUserRepo.save(user);
@@ -61,9 +57,7 @@ public class RecipeService {
         recipe.name = updatedRecipe.name;
         recipe.image = updatedRecipe.image;
         recipe.steps = updatedRecipe.steps;
-        //loop through updatedRecipe.ingredientIds
         for (Long ingredientId : updatedRecipe.ingredientIds) {
-            //get that ingredient by its id
             Optional<ItemInRecipe> ingredientWithId = itemInRecipeRepo.findById(ingredientId);
             if(ingredientWithId.isEmpty())
                 throw new Exception();

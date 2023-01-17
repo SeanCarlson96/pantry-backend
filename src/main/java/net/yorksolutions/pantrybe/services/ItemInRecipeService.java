@@ -25,12 +25,10 @@ public class ItemInRecipeService {
     public void createItemInRecipe(ItemInRecipeDTO newItemInRecipe) throws Exception {
         ItemInRecipe itemInRecipe = new ItemInRecipe();
         itemInRecipe.weightNeeded = newItemInRecipe.weightNeeded;
-        //find the item
         Optional<ItemUnit> itemWithId = itemUnitRepo.findById(newItemInRecipe.itemId);
         if(itemWithId.isEmpty())
             throw new Exception();
         itemInRecipe.item = itemWithId.orElse(null);
-        //find the applicable recipe
         Optional<Recipe> recipeWithId = recipeRepo.findById(newItemInRecipe.recipeId);
         if(recipeWithId.isEmpty())
             throw new Exception();
@@ -53,12 +51,10 @@ public class ItemInRecipeService {
             throw new Exception();
         ItemInRecipe itemInRecipe = itemInRecipeWithId.get();
         itemInRecipe.weightNeeded = updatedItemInRecipe.weightNeeded;
-        //find the item
         Optional<ItemUnit> itemWithId = itemUnitRepo.findById(updatedItemInRecipe.itemId);
         if(itemWithId.isEmpty())
             throw new Exception();
         itemInRecipe.item = itemWithId.orElse(null);
-        //find the applicable recipe
         Optional<Recipe> recipeWithId = recipeRepo.findById(updatedItemInRecipe.recipeId);
         if(recipeWithId.isEmpty())
             throw new Exception();

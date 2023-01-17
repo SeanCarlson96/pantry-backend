@@ -1,7 +1,6 @@
 package net.yorksolutions.pantrybe.services;
 
 import net.yorksolutions.pantrybe.DTOs.ItemUnitDTO;
-import net.yorksolutions.pantrybe.models.ItemInRecipe;
 import net.yorksolutions.pantrybe.models.ItemUnit;
 import net.yorksolutions.pantrybe.models.Pantry;
 import net.yorksolutions.pantrybe.repositories.ItemInRecipeRepo;
@@ -23,20 +22,15 @@ public class ItemUnitService {
         this.pantryRepo = pantryRepo;
     }
     public Iterable<ItemUnit> getAll() { return itemUnitRepo.findAll(); }
-    public void createItemUnit(ItemUnitDTO newItemUnit) { //throws Exception
+    public void createItemUnit(ItemUnitDTO newItemUnit) {
         ItemUnit itemUnit = new ItemUnit();
         itemUnit.name = newItemUnit.name;
         itemUnit.image = newItemUnit.image;
         itemUnit.weightPerUnit = newItemUnit.weightPerUnit;
         itemUnit.caloriesPerUnit = newItemUnit.caloriesPerUnit;
         itemUnit.pantryQuantity = newItemUnit.pantryQuantity;
-        //find the pantry
         Optional<Pantry> pantryWithId = pantryRepo.findById(newItemUnit.pantryId);
-//        if(pantryWithId.isEmpty()) {
-//            throw new Exception();
-//        }
         itemUnit.pantry = pantryWithId.orElse(null);
-
         itemUnitRepo.save(itemUnit);
         pantryWithId.get().items.add(itemUnit);
         pantryRepo.save(pantryWithId.get());
@@ -73,20 +67,10 @@ public class ItemUnitService {
         itemUnit.weightPerUnit = updatedItemUnit.weightPerUnit;
         itemUnit.caloriesPerUnit = updatedItemUnit.caloriesPerUnit;
         itemUnit.pantryQuantity = updatedItemUnit.pantryQuantity;
-        //find the pantry
         Optional<Pantry> pantryWithId = pantryRepo.findById(updatedItemUnit.pantryId);
         if(pantryWithId.isEmpty())
             throw new Exception();
         itemUnit.pantry = pantryWithId.orElse(null);
-        //find the applicable ItemInRecipes
-        //this is not something the user can update
-//        for (Long itemInRecipeId : updatedItemUnit.thisItemInRecipeIds) {
-//            Optional<ItemInRecipe> itemInRecipeWithId = itemInRecipeRepo.findById(itemInRecipeId);
-//            if (itemInRecipeWithId.isEmpty())
-//                throw new Exception();
-//            itemInRecipeWithId.ifPresent(itemUnit.thisItemInRecipes::add);
-//        }
-        ///
         itemUnitRepo.save(itemUnit);
     }
 }

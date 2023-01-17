@@ -1,8 +1,6 @@
 package net.yorksolutions.pantrybe.controllers;
 
-import net.yorksolutions.pantrybe.DTOs.ItemUnitDTO;
 import net.yorksolutions.pantrybe.DTOs.PantryDTO;
-import net.yorksolutions.pantrybe.models.ItemUnit;
 import net.yorksolutions.pantrybe.models.Pantry;
 import net.yorksolutions.pantrybe.services.PantryService;
 import org.springframework.http.HttpStatus;

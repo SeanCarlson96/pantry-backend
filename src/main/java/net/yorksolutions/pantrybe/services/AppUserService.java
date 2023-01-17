@@ -50,13 +50,10 @@ public class AppUserService {
         AppUser appUser = appUserWithId.get();
         appUser.username = updatedAppUser.username;
         appUser.password = updatedAppUser.password;
-        //loop through updatedAppUser.recipeIds
         for (Long recipeId : updatedAppUser.recipeIds) {
-            //get the recipe for that recipeId
             Optional<Recipe> recipeWithId = recipeRepo.findById(recipeId);
             if (recipeWithId.isEmpty())
                 throw new Exception();
-            //add that recipe to the Set of Recipes that is appUser.recipes
             recipeWithId.ifPresent(appUser.recipes::add);
         }
         appUserRepo.save(appUser);

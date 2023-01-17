@@ -1,6 +1,5 @@
 package net.yorksolutions.pantrybe.controllers;
 
-import net.yorksolutions.pantrybe.DTOs.AppUserDTO;
 import net.yorksolutions.pantrybe.DTOs.RecipeDTO;
 import net.yorksolutions.pantrybe.models.Recipe;
 import net.yorksolutions.pantrybe.services.RecipeService;
@@ -23,7 +22,6 @@ public class RecipeController {
         try{
             service.createRecipe(recipe);
         } catch (Exception e){
-            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED);
         }
     }
