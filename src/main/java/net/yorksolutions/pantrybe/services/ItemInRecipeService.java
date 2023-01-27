@@ -3,6 +3,7 @@ package net.yorksolutions.pantrybe.services;
 import net.yorksolutions.pantrybe.DTOs.ItemInRecipeDTO;
 import net.yorksolutions.pantrybe.models.ItemInRecipe;
 import net.yorksolutions.pantrybe.models.ItemUnit;
+import net.yorksolutions.pantrybe.models.Pantry;
 import net.yorksolutions.pantrybe.models.Recipe;
 import net.yorksolutions.pantrybe.repositories.ItemInRecipeRepo;
 import net.yorksolutions.pantrybe.repositories.ItemUnitRepo;
@@ -43,6 +44,13 @@ public class ItemInRecipeService {
         Optional<ItemInRecipe> itemInRecipeWithId = itemInRecipeRepo.findById(id);
         if (itemInRecipeWithId.isEmpty())
             throw new Exception();
+        ItemInRecipe itemInRecipe = itemInRecipeWithId.get();
+        Recipe recipe = recipeRepo.findById(itemInRecipe.recipe.id).get();
+        recipe.ingredients.remove(itemInRecipe);
+        recipeRepo.save(recipe);
+        ItemUnit itemUnit = itemUnitRepo.findById(itemInRecipe.item.id).get();
+        itemUnit.thisItemInRecipes.remove(itemInRecipe);
+        itemUnitRepo.save(itemUnit);
         itemInRecipeRepo.deleteById(id);
     }
     public void updateItemInRecipe(Long id, ItemInRecipeDTO updatedItemInRecipe) throws Exception {

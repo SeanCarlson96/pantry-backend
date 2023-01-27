@@ -15,9 +15,8 @@ public class AppUser {
     @Column(unique = true)
     public String username;
     public String password;
-    @OneToMany
+    @OneToMany(cascade = jakarta.persistence.CascadeType.DETACH, orphanRemoval = true)
     @JsonIgnoreProperties("user")
-    @Cascade(CascadeType.ALL)
     public Set<Recipe> recipes;
 
     public AppUser(Long id, String username, String password, Set<Recipe> recipes) {

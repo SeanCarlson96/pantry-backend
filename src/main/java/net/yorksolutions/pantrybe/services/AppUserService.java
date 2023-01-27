@@ -14,9 +14,11 @@ import java.util.*;
 public class AppUserService {
     private final AppUserRepo appUserRepo;
     private final RecipeRepo recipeRepo;
-    public AppUserService(AppUserRepo appUserRepo, RecipeRepo recipeRepo) {
+    private final RecipeService service;
+    public AppUserService(AppUserRepo appUserRepo, RecipeRepo recipeRepo, RecipeService service) {
         this.appUserRepo = appUserRepo;
         this.recipeRepo = recipeRepo;
+        this.service = service;
     }
     public Iterable<AppUser> getAll() {
         return appUserRepo.findAll();
@@ -40,6 +42,9 @@ public class AppUserService {
         Optional<AppUser> appUserWithId = appUserRepo.findById(id);
         if (appUserWithId.isEmpty())
             throw new Exception();
+        for(Recipe recipe : appUserWithId.get().recipes){
+            service.deleteRecipeById(recipe.id);
+        }
         appUserRepo.deleteById(id);
     }
 

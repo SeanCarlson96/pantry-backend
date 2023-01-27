@@ -1,6 +1,7 @@
 package net.yorksolutions.pantrybe.services;
 
 import net.yorksolutions.pantrybe.DTOs.ItemUnitDTO;
+import net.yorksolutions.pantrybe.models.ItemInRecipe;
 import net.yorksolutions.pantrybe.models.ItemUnit;
 import net.yorksolutions.pantrybe.models.Pantry;
 import net.yorksolutions.pantrybe.repositories.ItemInRecipeRepo;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class ItemUnitService {
     private final ItemUnitRepo itemUnitRepo;
     private final ItemInRecipeRepo itemInRecipeRepo;
+    private final ItemInRecipeService service;
     private final PantryRepo pantryRepo;
 
-    public ItemUnitService(ItemUnitRepo itemUnitRepo, ItemInRecipeRepo itemInRecipeRepo, PantryRepo pantryRepo) {
+    public ItemUnitService(ItemUnitRepo itemUnitRepo, ItemInRecipeRepo itemInRecipeRepo, ItemInRecipeService service, PantryRepo pantryRepo) {
         this.itemUnitRepo = itemUnitRepo;
         this.itemInRecipeRepo = itemInRecipeRepo;
+        this.service = service;
         this.pantryRepo = pantryRepo;
     }
     public Iterable<ItemUnit> getAll() { return itemUnitRepo.findAll(); }
@@ -30,7 +33,7 @@ public class ItemUnitService {
         itemUnit.caloriesPerUnit = newItemUnit.caloriesPerUnit;
         itemUnit.pantryQuantity = newItemUnit.pantryQuantity;
         Optional<Pantry> pantryWithId = pantryRepo.findById(newItemUnit.pantryId);
-        itemUnit.pantry = pantryWithId.orElse(null);
+        itemUnit.pantry = pantryWithId.get();
         itemUnitRepo.save(itemUnit);
         pantryWithId.get().items.add(itemUnit);
         pantryRepo.save(pantryWithId.get());
@@ -40,22 +43,15 @@ public class ItemUnitService {
         if (itemUnitWithId.isEmpty()) {
             throw new Exception();
         }
-//        ItemUnit itemUnit = itemUnitWithId.get();
-//
-//        Pantry pantry = pantryRepo.findById(itemUnit.pantry.id).get();
-//        Long itemId = 0L;
-//        for ( ItemUnit item : pantry.items ) {
-//            if(item.id == itemUnit.id) {
-//                itemId = item.id;
-//            }
-//        }
-//        if(itemId > 0){
-//            pantry.items.remove(itemId);
-//            System.out.println("here");
-//        }
-//        pantryRepo.save(pantry);
-
-        itemUnitRepo.deleteById(id);
+        ItemUnit itemUnit = itemUnitWithId.get();
+        Pantry pantry = pantryRepo.findById(itemUnit.pantry.id).get();
+        pantry.items.remove(itemUnit);
+        pantryRepo.save(pantry);
+        //I have to delete any itemInRecipe that references this item
+        for(ItemInRecipe itemInRecipe : itemUnitWithId.get().thisItemInRecipes){
+            service.deleteItemInRecipeById(itemInRecipe.id);
+        }
+        itemUnitRepo.delete(itemUnitWithId.get());
     }
     public void updateItemUnit(Long id, ItemUnitDTO updatedItemUnit) throws Exception {
         Optional<ItemUnit> itemUnitWithId = itemUnitRepo.findById(id);

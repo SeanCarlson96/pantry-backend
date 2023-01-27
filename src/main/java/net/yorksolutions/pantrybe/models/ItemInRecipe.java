@@ -8,11 +8,11 @@ public class ItemInRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
-    @ManyToOne
+    @ManyToOne(cascade = jakarta.persistence.CascadeType.DETACH)
     @JsonIgnoreProperties("recipes")
     public ItemUnit item;
     public Float weightNeeded;
-    @ManyToOne
+    @ManyToOne(cascade = jakarta.persistence.CascadeType.DETACH)
     @JsonIgnoreProperties("ingredients")
     public Recipe recipe;
     public ItemInRecipe(Long id, ItemUnit item, Float weightNeeded, Recipe recipe) {

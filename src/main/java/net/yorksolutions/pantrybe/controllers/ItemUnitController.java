@@ -22,6 +22,7 @@ public class ItemUnitController {
         try{
             service.createItemUnit(itemUnit);
         } catch (Exception e){
+            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED);
         }
     }

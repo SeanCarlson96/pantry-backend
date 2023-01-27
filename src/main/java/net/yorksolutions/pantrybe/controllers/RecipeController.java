@@ -22,6 +22,7 @@ public class RecipeController {
         try{
             service.createRecipe(recipe);
         } catch (Exception e){
+            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED);
         }
     }

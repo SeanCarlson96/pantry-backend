@@ -17,12 +17,11 @@ public class ItemUnit {
     public Float weightPerUnit;
     public Float caloriesPerUnit;
     public Integer pantryQuantity;
-    @ManyToOne
+    @ManyToOne(cascade = jakarta.persistence.CascadeType.DETACH)
     @JsonIgnoreProperties("items")
     public Pantry pantry;
-    @OneToMany
+    @OneToMany(cascade = jakarta.persistence.CascadeType.DETACH, orphanRemoval = true)
     @JsonIgnoreProperties("item")
-    @Cascade(CascadeType.ALL)
     public Set<ItemInRecipe> thisItemInRecipes;
 
     public ItemUnit(Long id, String name, String image, Float weightPerUnit, Float caloriesPerUnit, Integer pantryQuantity, Pantry pantry, Set<ItemInRecipe> thisItemInRecipes) {

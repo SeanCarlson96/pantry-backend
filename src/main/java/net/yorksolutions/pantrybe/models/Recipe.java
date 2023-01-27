@@ -14,12 +14,11 @@ public class Recipe {
     public Long id;
     public String name;
     public String image;
-    @OneToMany
+    @OneToMany(cascade = jakarta.persistence.CascadeType.DETACH, orphanRemoval = true)
     @JsonIgnoreProperties("recipe")
-    @Cascade(CascadeType.ALL)
     public Set<ItemInRecipe> ingredients;
     public String steps;
-    @ManyToOne
+    @ManyToOne(cascade = jakarta.persistence.CascadeType.DETACH)
     @JsonIgnoreProperties("recipes")
     public AppUser user;
     public Recipe(Long id, String name, String image, Set<ItemInRecipe> ingredients, String steps, AppUser user) {
