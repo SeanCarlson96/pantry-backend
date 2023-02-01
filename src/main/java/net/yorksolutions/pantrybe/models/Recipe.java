@@ -13,6 +13,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
     public String name;
+    @Column(columnDefinition = "text")
     public String image;
     @OneToMany(cascade = jakarta.persistence.CascadeType.DETACH, orphanRemoval = true)
     @JsonIgnoreProperties("recipe")

@@ -8,7 +8,6 @@ public class PantryBeApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PantryBeApplication.class, args);
-        System.out.println("test");
     }
 
 }

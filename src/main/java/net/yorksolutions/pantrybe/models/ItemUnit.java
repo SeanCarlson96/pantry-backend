@@ -13,6 +13,7 @@ public class ItemUnit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
     public String name;
+    @Column(columnDefinition = "text")
     public String image;
     public Float weightPerUnit;
     public Float caloriesPerUnit;
